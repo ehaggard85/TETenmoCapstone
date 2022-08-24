@@ -32,7 +32,7 @@ ID          From/To                 Amount
 23          From: Bernice          $ 903.14
 79          To:    Larry           $  12.55
 ---------
-Please enter transfer ID to view details (0 to cancel): "
+Please enter transferDao ID to view details (0 to cancel): "
 ```
 
 ### Use case 4: Transfer details
@@ -71,10 +71,10 @@ ID          To                     Amount
 88          Bernice                $ 142.56
 147         Larry                  $  10.17
 ---------
-Please enter transfer ID to approve/reject (0 to cancel): "
+Please enter transferDao ID to approve/reject (0 to cancel): "
 ```
 
-### Use case 7: Approve or reject pending transfer
+### Use case 7: Approve or reject pending transferDao
 ```
 1: Approve
 2: Reject

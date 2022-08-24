@@ -37,7 +37,7 @@ public class JdbcUserDao implements UserDao {
         List<User> users = new ArrayList<>();
         String sql = "SELECT user_id, username, password_hash FROM tenmo_user;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-        while(results.next()) {
+        while (results.next()) {
             User user = mapRowToUser(results);
             users.add(user);
         }
@@ -48,7 +48,7 @@ public class JdbcUserDao implements UserDao {
     public User findByUsername(String username) throws UsernameNotFoundException {
         String sql = "SELECT user_id, username, password_hash FROM tenmo_user WHERE username ILIKE ?;";
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, username);
-        if (rowSet.next()){
+        if (rowSet.next()) {
             return mapRowToUser(rowSet);
         }
         throw new UsernameNotFoundException("User " + username + " was not found.");
@@ -68,9 +68,19 @@ public class JdbcUserDao implements UserDao {
         }
 
         // TODO: Create the account record with initial balance
+        String sqlAccount = "INSERT INTO account (user_id, balance) " +
+                "VALUES (?, 1000) RETURNING account_id";
+        Integer newAccountId;
 
+        try {
+            newAccountId = jdbcTemplate.queryForObject(sqlAccount,
+                    Integer.class, newUserId);
+        } catch (DataAccessException e) {
+            return false;
+        }
         return true;
     }
+
 
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();

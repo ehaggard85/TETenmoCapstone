@@ -12,6 +12,8 @@ public class User {
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
 
+
+   // empty constructor
    public User() { }
 
    public User(int id, String username, String password, String authorities) {

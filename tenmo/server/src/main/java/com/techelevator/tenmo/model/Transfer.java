@@ -2,16 +2,17 @@ package com.techelevator.tenmo.model;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class Transfer {
 
 private int transferId;
 
-    @NotBlank(message = "The Sender field cannot be left blank.")
-private String sender;
-    @NotBlank(message = "The Receiver field cannot be left blank.")
-private String receiver;
+    @NotNull(message = "The Sender field cannot be left blank.")
+private int sender;
+    @NotNull(message = "The Receiver field cannot be left blank.")
+private int receiver;
     @DecimalMin(value = "1.0", message = "Transfer Amount must be at least $1.00.")
 private BigDecimal transfer_amount;
 
@@ -19,8 +20,8 @@ private BigDecimal transfer_amount;
 public Transfer(){}
 
 
-    public Transfer(int transferId, String sender,
-                    String receiver, BigDecimal transfer_amount)
+    public Transfer(int transferId, int sender,
+                    int receiver, BigDecimal transfer_amount)
     {
         this.transferId = transferId;
         this.sender = sender;
@@ -37,19 +38,19 @@ public Transfer(){}
         this.transferId = transferId;
     }
 
-    public String getSender() {
+    public int getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(int  sender) {
         this.sender = sender;
     }
 
-    public String getReceiver() {
+    public int getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(String receiver) {
+    public void setReceiver(int  receiver) {
         this.receiver = receiver;
     }
 

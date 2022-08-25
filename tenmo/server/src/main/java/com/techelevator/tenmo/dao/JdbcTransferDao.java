@@ -11,7 +11,10 @@ import java.util.List;
 
 @Component
 public class JdbcTransferDao implements TransferDao {
-    private JdbcTemplate jdbcTemplate;
+
+
+     JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
 
     @Override
     public List<Transfer> list(int userId) {
@@ -47,7 +50,7 @@ public class JdbcTransferDao implements TransferDao {
     public Transfer sendTransfer(Transfer transfer) {
 
         String sql = "INSERT INTO (sender, transfer_amount, receiver) " +
-                "VALUES(?, ?, ?) RETURNING transfer_id;";
+                "VALUES (?, ?, ?) RETURNING transfer_id;";
         Integer newId = jdbcTemplate.queryForObject(sql,
                 Integer.class, transfer.getSender(),
                 transfer.getTransfer_amount(), transfer.getReceiver());
@@ -58,8 +61,8 @@ public class JdbcTransferDao implements TransferDao {
     private Transfer mapRowToTransfer(SqlRowSet row) {
         Transfer transfer = new Transfer();
         transfer.setTransferId(row.getInt("account_id"));
-        transfer.setSender(row.getString("sender"));
-        transfer.setReceiver(row.getString("receiver"));
+        transfer.setSender(row.getInt("sender"));
+        transfer.setReceiver(row.getInt("receiver"));
         transfer.setTransfer_amount(row.getBigDecimal("transfer_amount"));
 
 

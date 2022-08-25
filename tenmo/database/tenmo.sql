@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS tenmo_user, account, transfer, send, receive CASCADE;
+DROP TABLE IF EXISTS tenmo_user, account, transfer CASCADE;
 
 DROP SEQUENCE IF EXISTS seq_user_id, seq_account_id, seq_transfer_id;
 
@@ -27,7 +27,6 @@ CREATE SEQUENCE seq_account_id
 
 CREATE TABLE account (
     user_id int NOT NULL,
-	username varchar(50) NOT NULL,
 	account_id int NOT NULL DEFAULT nextval('seq_account_id'),
 	balance decimal(13, 2) NOT NULL,
 	CONSTRAINT PK_account PRIMARY KEY (account_id),
@@ -40,27 +39,16 @@ CREATE SEQUENCE seq_transfer_id
 
 CREATE TABLE transfer (
     transfer_id int NOT NULL DEFAULT nextval('seq_transfer_id'),
-    sender varchar(40) NOT NULL,
+    sender int NOT NULL,
+    receiver int NOT NULL,
     transfer_amount decimal(13,2) NOT NULL,
-    receiver varchar(40) NOT NULL,
-    CONSTRAINT PK_transfer PRIMARY KEY (transfer_id)
+
+    CONSTRAINT PK_transfer PRIMARY KEY (transfer_id),
+    CONSTRAINT FK_transfer_sender_account FOREIGN KEY (sender) REFERENCES account (account_id),
+    CONSTRAINT FK_transfer_receiver_account FOREIGN KEY (receiver) REFERENCES account (account_id)
 );
 
-CREATE TABLE send (
-    account_id int NOT NULL,
-    sender_id int NOT NULL,
-    CONSTRAINT PK_send_id PRIMARY KEY(account_id, sender_id),
-    CONSTRAINT FK_send_account FOREIGN KEY(account_id) REFERENCES account(account_id),
-    CONSTRAINT FK_send_sender FOREIGN KEY(sender_id) REFERENCES transfer(transfer_id)
-);
 
-CREATE TABLE receive (
-    account_id int NOT NULL,
-    receiver_id int NOT NULL,
-    CONSTRAINT PK_receive_id PRIMARY KEY(account_id, receiver_id),
-    CONSTRAINT FK_receive_account FOREIGN KEY(account_id) REFERENCES account(account_id),
-    CONSTRAINT FK_receive_receiver FOREIGN KEY(receiver_id) REFERENCES transfer(transfer_id)
-);
 
 
 COMMIT;

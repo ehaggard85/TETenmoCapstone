@@ -54,7 +54,7 @@ public class JdbcTransferDao implements TransferDao {
 
     @Override
     public Transfer sendTransfer(Transfer transfer) {
-        Transfer newTransfer = new Transfer();
+
         String sql = "INSERT INTO transfer (sender, transfer_amount, receiver) " +
                 "VALUES ((SELECT account_id FROM account WHERE user_id = ?), ?, (SELECT account_id FROM account WHERE user_id = ?)) RETURNING transfer_id;";
         System.out.println(transfer.getSender());

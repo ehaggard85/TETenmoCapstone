@@ -1,15 +1,18 @@
 package com.techelevator.tenmo.model;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 public class Transfer {
 
 private int transferId;
 
+    @NotBlank(message = "The Sender field cannot be left blank.")
 private String sender;
-
+    @NotBlank(message = "The Receiver field cannot be left blank.")
 private String receiver;
-
+    @DecimalMin(value = "1.0", message = "Transfer Amount must be at least $1.00.")
 private BigDecimal transfer_amount;
 
 // empty constructor

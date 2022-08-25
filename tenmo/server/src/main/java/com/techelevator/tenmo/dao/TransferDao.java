@@ -1,19 +1,23 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.model.Transfer;
+
 import java.util.List;
 
 public interface TransferDao {
 
 
 
-    List<TransferDao> list();
+    List<Transfer> list(int userId);
 
-    TransferDao getByTransferId(int transferId);
-
-    TransferDao create(TransferDao transferDao);
+    Transfer getByTransferId(int transferId);
 
 
-    TransferDao sendTransfer(TransferDao transferDao);
+
+
+
+
+    Transfer sendTransfer(Transfer transfer);
 
 
 }

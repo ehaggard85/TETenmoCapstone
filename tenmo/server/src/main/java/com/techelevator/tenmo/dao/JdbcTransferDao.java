@@ -13,16 +13,22 @@ import java.util.List;
 public class JdbcTransferDao implements TransferDao {
 
 
-     JdbcTemplate jdbcTemplate = new JdbcTemplate();
+     JdbcTemplate jdbcTemplate;
+
+     public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
+         this.jdbcTemplate = jdbcTemplate;
+     }
+
+
 
 
     @Override
     public List<Transfer> list(int userId) {
         List<Transfer> listOfTransfers = new ArrayList<>();
-        String sql = "SELECT transfer_amount FROM transfer " +
-                "JOIN account ON account.transfer_id = transfer.transfer_id " +
+        String sql = "SELECT transfer_id, sender, receiver, transfer_amount FROM transfer " +
+                "JOIN account ON account.account_id = transfer.sender " +
                 "JOIN tenmo_user ON tenmo_user.user_id = account.user_id " +
-                "WHERE user_id = ?;";
+                "WHERE tenmo_user.user_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
         while (results.next()) {
             Transfer transfer = mapRowToTransfer(results);
@@ -48,9 +54,12 @@ public class JdbcTransferDao implements TransferDao {
 
     @Override
     public Transfer sendTransfer(Transfer transfer) {
-
-        String sql = "INSERT INTO (sender, transfer_amount, receiver) " +
-                "VALUES (?, ?, ?) RETURNING transfer_id;";
+        Transfer newTransfer = new Transfer();
+        String sql = "INSERT INTO transfer (sender, transfer_amount, receiver) " +
+                "VALUES ((SELECT account_id FROM account WHERE user_id = ?), ?, (SELECT account_id FROM account WHERE user_id = ?)) RETURNING transfer_id;";
+        System.out.println(transfer.getSender());
+        System.out.println(transfer.getReceiver());
+        System.out.println(transfer.getTransfer_amount());
         Integer newId = jdbcTemplate.queryForObject(sql,
                 Integer.class, transfer.getSender(),
                 transfer.getTransfer_amount(), transfer.getReceiver());
@@ -60,7 +69,7 @@ public class JdbcTransferDao implements TransferDao {
 
     private Transfer mapRowToTransfer(SqlRowSet row) {
         Transfer transfer = new Transfer();
-        transfer.setTransferId(row.getInt("account_id"));
+        transfer.setTransferId(row.getInt("transfer_id"));
         transfer.setSender(row.getInt("sender"));
         transfer.setReceiver(row.getInt("receiver"));
         transfer.setTransfer_amount(row.getBigDecimal("transfer_amount"));

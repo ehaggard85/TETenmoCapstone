@@ -8,6 +8,7 @@ public class Account {
 
     private int accountId;
     @DecimalMin(value = "0", message = "Balance cannot go below zero.")
+    private int userId;
     private BigDecimal balance;
 
     // empty constructor
@@ -15,7 +16,8 @@ public class Account {
     }
 
 
-    public Account(int accountId, BigDecimal balance) {
+    public Account(int accountId, int userId, BigDecimal balance) {
+        this.userId = userId;
         this.accountId = accountId;
         this.balance = balance;
     }
@@ -30,6 +32,14 @@ public class Account {
 
     public BigDecimal getBalance() {
         return balance;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setBalance(BigDecimal balance) {

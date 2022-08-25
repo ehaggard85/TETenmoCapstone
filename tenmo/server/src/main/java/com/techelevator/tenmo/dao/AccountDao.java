@@ -7,9 +7,11 @@ import java.util.List;
 public interface AccountDao {
 
 
-    Account getBalance(int userId);
+    List<Account> getBalance(int userId);
 
-    List<Account> getTransfers(int accountId);
+
+
+
 
 
 

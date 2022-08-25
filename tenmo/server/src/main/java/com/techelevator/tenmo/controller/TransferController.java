@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
@@ -21,6 +22,8 @@ public class TransferController {
     private TransferDao transferDao;
     private UserDao userDao;
 
+    public TransferController(){}
+
   public  TransferController(TransferDao transferDao, UserDao userDao){
 
       this.transferDao = transferDao;
@@ -28,7 +31,8 @@ public class TransferController {
   }
 
   @RequestMapping(path = "/{id}", method = RequestMethod.GET )
-    public Transfer getByTransferId(@PathVariable int transferId) throws TransferNotFoundException {
+    public Transfer getByTransferId(@PathVariable ("id")
+       Integer transferId) throws TransferNotFoundException {
 
         return transferDao.getByTransferId(transferId);
     }
@@ -42,6 +46,12 @@ public Transfer sendTransfer(@Valid @RequestBody Transfer transfer, Principal pr
 
       return transferDao.sendTransfer(transfer);
     }
+
+        @RequestMapping(path = "/allUserTransfers", method = RequestMethod.GET)
+    public List<Transfer> list(Principal principal) throws TransferNotFoundException {
+
+      return transferDao.list(userDao.findIdByUsername(principal.getName()));
+        }
 
 }
 

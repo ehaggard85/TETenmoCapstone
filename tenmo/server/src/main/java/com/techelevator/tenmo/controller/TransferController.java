@@ -22,7 +22,8 @@ public class TransferController {
     private TransferDao transferDao;
     private UserDao userDao;
 
-    public TransferController(){}
+
+
 
   public  TransferController(TransferDao transferDao, UserDao userDao){
 

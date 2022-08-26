@@ -29,6 +29,8 @@ public class AccountController {
         this.userDao = userDao;
     }
 
+
+
     @RequestMapping(path = "/balance", method = RequestMethod.GET)
     public List<Account> getBalance(Principal principal) throws AccountNotFoundException {
         return accountDao.getBalance(userDao.findIdByUsername(principal.getName()));

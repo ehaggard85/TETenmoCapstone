@@ -1,11 +1,14 @@
 package com.techelevator.tenmo.dao;
 
 
+import com.techelevator.tenmo.controller.AccountController;
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +16,13 @@ import java.util.List;
 public class JdbcTransferDao implements TransferDao {
 
 
-     JdbcTemplate jdbcTemplate;
-
-     public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
-         this.jdbcTemplate = jdbcTemplate;
-     }
+    JdbcTemplate jdbcTemplate;
 
 
+    public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
+
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
 
     @Override
@@ -40,15 +43,16 @@ public class JdbcTransferDao implements TransferDao {
 
     @Override
     public Transfer getByTransferId(int transferId) {
-       Transfer transfer = null;
-       String sql = "SELECT transfer_id, sender, transfer_amount, receiver " +
-               "FROM transfer WHERE transfer_id = ?;";
-       SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
+        Transfer transfer = null;
+        String sql = "SELECT transfer_id, sender, transfer_amount, receiver " +
+                "FROM transfer WHERE transfer_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
 
         if (results.next()) {
             transfer = mapRowToTransfer(results);
 
-        } return transfer;
+        }
+        return transfer;
     }
 
 
@@ -56,13 +60,29 @@ public class JdbcTransferDao implements TransferDao {
     public Transfer sendTransfer(Transfer transfer) {
 
         String sql = "INSERT INTO transfer (sender, transfer_amount, receiver) " +
-                "VALUES ((SELECT account_id FROM account WHERE user_id = ?), ?, (SELECT account_id FROM account WHERE user_id = ?)) RETURNING transfer_id;";
+                "VALUES ((SELECT account_id FROM account WHERE user_id = ?), ?, " +
+                "(SELECT account_id FROM account WHERE user_id = ?)) RETURNING transfer_id;";
         System.out.println(transfer.getSender());
         System.out.println(transfer.getReceiver());
         System.out.println(transfer.getTransfer_amount());
         Integer newId = jdbcTemplate.queryForObject(sql,
                 Integer.class, transfer.getSender(),
                 transfer.getTransfer_amount(), transfer.getReceiver());
+
+
+        Account ac = new Account();
+
+
+        String sqlUpdateWithdraw = "UPDATE account " +
+                "SET balance = balance - ? "
+                + "WHERE user_id = ?;";
+        jdbcTemplate.update(sqlUpdateWithdraw, transfer.getTransfer_amount(), transfer.getSender());
+
+        String sqlUpdateDeposit = "UPDATE account " +
+                "SET balance = balance + ? "
+                + "WHERE user_id = ?;";
+        jdbcTemplate.update(sqlUpdateDeposit, transfer.getTransfer_amount(), transfer.getReceiver());
+
 
         return getByTransferId(newId);
     }

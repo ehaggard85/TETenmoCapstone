@@ -6,6 +6,7 @@ import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.exception.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,6 @@ public class TransferController {
 
     private TransferDao transferDao;
     private UserDao userDao;
-
-<<<<<<< Updated upstream
-
-
-=======
->>>>>>> Stashed changes
 
   public  TransferController(TransferDao transferDao, UserDao userDao){
 

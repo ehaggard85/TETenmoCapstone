@@ -1,7 +1,10 @@
 package com.techelevator.tenmo.dao;
 
 
+<<<<<<< Updated upstream
 import com.techelevator.tenmo.controller.AccountController;
+=======
+>>>>>>> Stashed changes
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,6 +18,7 @@ import java.util.List;
 @Component
 public class JdbcTransferDao implements TransferDao {
 
+<<<<<<< Updated upstream
 
     JdbcTemplate jdbcTemplate;
 
@@ -25,6 +29,15 @@ public class JdbcTransferDao implements TransferDao {
     }
 
 
+=======
+      Account account;
+     JdbcTemplate jdbcTemplate;
+
+     public JdbcTransferDao(JdbcTemplate jdbcTemplate, Account account) {
+         this.jdbcTemplate = jdbcTemplate;
+         this.account = account;
+     }
+>>>>>>> Stashed changes
     @Override
     public List<Transfer> list(int userId) {
         List<Transfer> listOfTransfers = new ArrayList<>();
@@ -60,16 +73,22 @@ public class JdbcTransferDao implements TransferDao {
     public Transfer sendTransfer(Transfer transfer) {
 
         String sql = "INSERT INTO transfer (sender, transfer_amount, receiver) " +
+<<<<<<< Updated upstream
                 "VALUES ((SELECT account_id FROM account WHERE user_id = ?), ?, " +
                 "(SELECT account_id FROM account WHERE user_id = ?)) RETURNING transfer_id;";
         System.out.println(transfer.getSender());
         System.out.println(transfer.getReceiver());
         System.out.println(transfer.getTransfer_amount());
+=======
+                "VALUES ((SELECT account_id FROM account WHERE user_id = ?), ?, (SELECT account_id FROM account WHERE user_id = ?)) RETURNING transfer_id;";
+
+>>>>>>> Stashed changes
         Integer newId = jdbcTemplate.queryForObject(sql,
                 Integer.class, transfer.getSender(),
                 transfer.getTransfer_amount(), transfer.getReceiver());
 
 
+<<<<<<< Updated upstream
         Account ac = new Account();
 
 
@@ -82,6 +101,20 @@ public class JdbcTransferDao implements TransferDao {
                 "SET balance = balance + ? "
                 + "WHERE user_id = ?;";
         jdbcTemplate.update(sqlUpdateDeposit, transfer.getTransfer_amount(), transfer.getReceiver());
+=======
+        String sqlUpdateWithdraw = "UPDATE account " +
+                            "SET balance = balance - ? " +
+                            "WHERE user_id = ?;";
+
+        jdbcTemplate.update(sqlUpdateWithdraw,transfer.getTransfer_amount(),transfer.getSender());
+
+        String sqlUpdateDeposit = "UPDATE account " +
+                "SET balance = balance + ? " +
+                "WHERE user_id = ?";
+
+       jdbcTemplate.update(sqlUpdateDeposit,transfer.getTransfer_amount(),transfer.getReceiver());
+
+>>>>>>> Stashed changes
 
 
         return getByTransferId(newId);

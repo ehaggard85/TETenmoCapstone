@@ -1,9 +1,12 @@
 package com.techelevator.tenmo.model;
 
+import org.springframework.stereotype.Component;
+
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
+@Component
 public class Account {
 
     private int accountId;
@@ -21,6 +24,7 @@ public class Account {
         this.accountId = accountId;
         this.balance = balance;
     }
+
 
     public int getAccountId() {
         return accountId;

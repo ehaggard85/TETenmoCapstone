@@ -38,6 +38,12 @@ public class JdbcAccountDao implements AccountDao {
         return balance;
     }
 
+<<<<<<< Updated upstream
+=======
+
+
+
+>>>>>>> Stashed changes
     public Account mapRowToAccount(SqlRowSet row) {
         Account account = new Account();
         account.setUserId(row.getInt("user_id"));
@@ -45,4 +51,6 @@ public class JdbcAccountDao implements AccountDao {
         account.setBalance(row.getBigDecimal("balance"));
         return account;
     }
+
+
 }

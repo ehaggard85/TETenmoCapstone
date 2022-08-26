@@ -3,9 +3,11 @@ package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
+import com.techelevator.tenmo.dao.UserDaoDTO;
 import com.techelevator.tenmo.exception.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
+import com.techelevator.tenmo.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -23,11 +25,13 @@ public class TransferController {
 
     private TransferDao transferDao;
     private UserDao userDao;
+    private UserDaoDTO userDaoDTO;
 
-  public  TransferController(TransferDao transferDao, UserDao userDao){
+  public  TransferController(TransferDao transferDao, UserDao userDao, UserDaoDTO userDaoDTO){
 
       this.transferDao = transferDao;
       this.userDao = userDao;
+      this.userDaoDTO = userDaoDTO;
   }
 
   @RequestMapping(path = "/{id}", method = RequestMethod.GET )
@@ -38,9 +42,9 @@ public class TransferController {
     }
 
     @RequestMapping(path = "/activeUsers", method = RequestMethod.GET)
-    public List<User> getActiveUsers(Principal principal) throws TransferNotFoundException{
+    public List<UserDTO> getActiveUsers(Principal principal) throws TransferNotFoundException{
 
-      return userDao.findAll(userDao.findIdByUsername(principal.getName()));
+      return userDaoDTO.getAllUsers(userDao.findIdByUsername(principal.getName()));
     }
 
     @RequestMapping(path = "", method = RequestMethod.POST)

@@ -22,13 +22,6 @@ public class JdbcTransferDao implements TransferDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    /*Account account;
-
-     public JdbcTransferDao(JdbcTemplate jdbcTemplate, Account account) {
-         this.jdbcTemplate = jdbcTemplate;
-         this.account = account;}
-   */
-
     @Override
     public List<Transfer> list(int userId) {
         List<Transfer> listOfTransfers = new ArrayList<>();

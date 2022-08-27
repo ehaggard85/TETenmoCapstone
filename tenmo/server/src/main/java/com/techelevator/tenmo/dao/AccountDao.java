@@ -9,6 +9,7 @@ public interface AccountDao {
 
     List<Account> getBalance(int userId);
 
+    Account getAccount(int accountId);
 
 
 

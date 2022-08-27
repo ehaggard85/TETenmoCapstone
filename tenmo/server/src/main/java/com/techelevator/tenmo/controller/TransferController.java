@@ -41,6 +41,7 @@ public class TransferController {
         return transferDao.getByTransferId(transferId);
     }
 
+
     @RequestMapping(path = "/activeUsers", method = RequestMethod.GET)
     public List<UserDTO> getActiveUsers(Principal principal) throws TransferNotFoundException{
 

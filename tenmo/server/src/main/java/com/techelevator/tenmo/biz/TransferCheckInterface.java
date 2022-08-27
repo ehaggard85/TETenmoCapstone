@@ -5,11 +5,12 @@ import java.math.BigDecimal;
 public interface TransferCheckInterface {
 
 
-    public boolean accountGreaterThanZero(int userId, int account);
+    public boolean accountGreaterThanZero(int account);
 
-    public boolean balanceGreaterThanTransfer(int userId, int account,BigDecimal transferAmount);
+    public boolean balanceGreaterThanTransfer(int account,BigDecimal transferAmount);
 
-    public boolean senderNotreceiver(int userId);
+    public boolean senderNotReceiver(int senderAccountId, int receiverAccountId);
 
     public boolean transferAmountPositive(BigDecimal transferAmount);
+
 }

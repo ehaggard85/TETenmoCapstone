@@ -1,9 +1,11 @@
 package com.techelevator.tenmo.controller;
 
 
+import com.techelevator.tenmo.biz.TransferCheck;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.dao.UserDaoDTO;
+import com.techelevator.tenmo.exception.MessageNotGreaterThanZero;
 import com.techelevator.tenmo.exception.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
@@ -26,6 +28,7 @@ public class TransferController {
     private TransferDao transferDao;
     private UserDao userDao;
     private UserDaoDTO userDaoDTO;
+    private TransferCheck transferCheck;
 
   public  TransferController(TransferDao transferDao, UserDao userDao, UserDaoDTO userDaoDTO){
 
@@ -53,11 +56,15 @@ public class TransferController {
             throws TransferNotFoundException {
 //        Remember: Postman *is* the Client
         transfer.setSender(userDao.findIdByUsername(principal.getName()));
+        int sendersId = transfer.getSender();
+        int receiversId = transfer.getReceiver();
+
+        if (transferCheck.accountGreaterThanZero(sendersId)) {
+            return transferDao.sendTransfer(transfer);
+        } else throw new MessageNotGreaterThanZero("Yo, you have no money bro!");
 
 
-      return transferDao.sendTransfer(transfer);
     }
-
         @RequestMapping(path = "/allUserTransfers", method = RequestMethod.GET)
     public List<Transfer> list(Principal principal) throws TransferNotFoundException {
 

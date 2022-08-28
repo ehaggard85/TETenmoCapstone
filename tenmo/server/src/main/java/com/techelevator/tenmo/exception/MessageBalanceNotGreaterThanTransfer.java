@@ -4,9 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class MessageBalanceNotGreaterThanTransfer
-extends RuntimeException {
-
+public class MessageBalanceNotGreaterThanTransfer extends RuntimeException {
+    public MessageBalanceNotGreaterThanTransfer(String errorMsgBalance){
+        super("Your Balance is not greater than the transfer amount.");
+    }
 
     }
 

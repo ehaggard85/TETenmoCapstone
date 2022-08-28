@@ -6,8 +6,7 @@ import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.dao.UserDaoDTO;
-import com.techelevator.tenmo.exception.MessageNotGreaterThanZero;
-import com.techelevator.tenmo.exception.TransferNotFoundException;
+import com.techelevator.tenmo.exception.*;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
@@ -69,21 +68,23 @@ public class TransferController {
         int receiversAccountId = accountDao.getAccountByUserId(receiversId).getAccountId();
         BigDecimal transferAmount = transfer.getTransfer_amount();
         System.out.println();
-        System.out.println("=========================================");
-        System.out.println("------> sender's Acct ID = " + sendersAccountId + "------> receiver's Acct ID = " + receiversAccountId);
-        System.out.println("=========================================");
-        if (transferCheck.accountGreaterThanZero(sendersAccountId)) {
-            if (transferCheck.balanceGreaterThanTransfer(sendersAccountId, transferAmount )) {
 
-            } if (transferCheck.transferAmountPositive(transferAmount)) {
+        if (!transferCheck.accountGreaterThanZero(sendersAccountId)) {
+            throw new MessageNotGreaterThanZero("Account Balance is at $0.00, sorry.");}
 
-            } if (transferCheck.senderNotReceiver(sendersAccountId, receiversAccountId)) {
-                return transferDao.sendTransfer(transfer);
+            if (!transferCheck.balanceGreaterThanTransfer(sendersAccountId, transferAmount)) {
+                throw new MessageBalanceNotGreaterThanTransfer("You're still zeroed out, bro.");
             }
-        }  else throw new MessageNotGreaterThanZero("Yo, you have no money bro!");
+            if (!transferCheck.transferAmountPositive(transferAmount)) {
+                    throw new MessageTransferNotPositive("Your transfer amount needs to be positive.");
+                }
+                if (!transferCheck.senderNotReceiver(sendersAccountId, receiversAccountId)) {
+                    throw new MessageSenderIsReceiver("You cannot transfer funds from your own account and then back into your own account.");
+                } return transferDao.sendTransfer(transfer);
+            }
 
-        return null;
-    }
+
+
         @RequestMapping(path = "/allUserTransfers", method = RequestMethod.GET)
     public List<Transfer> list(Principal principal) throws TransferNotFoundException {
 

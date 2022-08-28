@@ -39,7 +39,7 @@ public class TransferCheck implements TransferCheckInterface {
 
     @Override
     public boolean balanceGreaterThanTransfer(int accountId, BigDecimal transferAmount) {
-        return accountdao.getAccount(accountId).getBalance().compareTo(transferAmount) > 0;
+        return accountdao.getAccount(accountId).getBalance().compareTo(transferAmount) >= 0;
     }
 
     //sender != receiver

@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 public class Account {
 
     private int accountId;
-    @DecimalMin(value = "0", message = "Balance cannot go below zero.")
     private int userId;
+    @DecimalMin(value = "0", message = "Balance cannot go below zero.")
     private BigDecimal balance;
 
     // empty constructor

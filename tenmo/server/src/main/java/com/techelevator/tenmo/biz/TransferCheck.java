@@ -51,7 +51,7 @@ public class TransferCheck implements TransferCheckInterface {
     // check that the passed-in transferAmount is > 0
     @Override
     public boolean transferAmountPositive(BigDecimal transferAmount) {
-        return transferAmount.compareTo(BigDecimal.ZERO) > 0;
+        return transferAmount.compareTo(BigDecimal.valueOf(1.00)) > 0;
     }
 }
 

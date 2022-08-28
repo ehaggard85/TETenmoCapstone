@@ -13,7 +13,7 @@ private int transferId;
 private int sender;
     @NotNull(message = "The Receiver field cannot be left blank.")
 private int receiver;
-    @DecimalMin(value = "1.0", message = "Transfer Amount must be at least $1.00.")
+ //@DecimalMin(value = "1.0", message = "Transfer Amount must be at least $1.00.")
 private BigDecimal transfer_amount;
 
 // empty constructor

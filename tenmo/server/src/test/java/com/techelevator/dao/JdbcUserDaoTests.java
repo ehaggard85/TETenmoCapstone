@@ -28,4 +28,6 @@ public class JdbcUserDaoTests extends BaseDaoTests{
         Assert.assertEquals("TEST_USER", user.getUsername());
     }
 
+
+
 }

@@ -4,12 +4,16 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 
 @Component
 public class Account {
 
+
     private int accountId;
+    @NotNull(message = "Id cannot be null")
     private int userId;
     @DecimalMin(value = "0", message = "Balance cannot go below zero.")
     private BigDecimal balance;

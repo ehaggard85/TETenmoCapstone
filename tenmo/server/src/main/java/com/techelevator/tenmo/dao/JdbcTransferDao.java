@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.controller.AccountController;
+import com.techelevator.tenmo.exception.*;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -55,21 +56,18 @@ public class JdbcTransferDao implements TransferDao {
 
     @Override
     public Transfer sendTransfer(Transfer transfer) {
-
-
-
-
-
-
-
+        Integer newId;
         String sql = "INSERT INTO transfer (sender, transfer_amount, receiver) " +
 
                 "VALUES ((SELECT account_id FROM account WHERE user_id = ?), ?, " +
                 "(SELECT account_id FROM account WHERE user_id = ?)) RETURNING transfer_id;";
-
-        Integer newId = jdbcTemplate.queryForObject(sql,
-                Integer.class, transfer.getSender(),
-                transfer.getTransfer_amount(), transfer.getReceiver());
+        try {
+            newId = jdbcTemplate.queryForObject(sql,
+                    Integer.class, transfer.getSender(),
+                    transfer.getTransfer_amount(), transfer.getReceiver());
+        }catch(RuntimeException e){
+            throw new TransferFieldBlank("Field cannot be blank");
+        }
 
 
         String sqlUpdateWithdraw = "UPDATE account " +

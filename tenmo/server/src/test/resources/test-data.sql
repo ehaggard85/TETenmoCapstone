@@ -58,7 +58,7 @@ VALUES ('1001', '1000'),
        ('1002', '1000');
 
 --INSERT INTO transfer (sender, receiver, transfer_amount)
---VALUES ('1001', '1002', '500'),
-       --('1002', '1001', '200');
+--VALUES ('2001', '2002', '500'),
+       --('2002', '2001', '200');
 
 COMMIT;

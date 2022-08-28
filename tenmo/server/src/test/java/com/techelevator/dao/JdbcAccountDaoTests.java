@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.model.Account;
 import org.junit.Assert;
@@ -20,6 +21,24 @@ public class JdbcAccountDaoTests extends BaseDaoTests{
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         sut = new JdbcAccountDao(jdbcTemplate);
     }
+    //testing current userId yields users accountId
+    @Test
+    public  void getAccountByUserId(){
+
+       int userAccountId = sut.getAccountByUserId(1001).getAccountId();
+       int expectedAccountId = 2001;
+        Assert.assertEquals(expectedAccountId, userAccountId);
+    }
+
+    //Why did we need a wrapper Class?
+    @Test
+    public  void getAccountByUserIdNull(){
+
+        Account actualUserId = sut.getAccountByUserId(4500);
+        Account expectedAccount = null;
+        Assert.assertNull(String.valueOf(actualUserId), null);
+    }
+
 
     @Test
     public void getBalanceByAccountIdTest(){
@@ -29,4 +48,7 @@ public class JdbcAccountDaoTests extends BaseDaoTests{
 
         Assert.assertEquals(balance, expectedBalance);
     }
+
+
+
 }
